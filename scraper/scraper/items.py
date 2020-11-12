@@ -10,3 +10,5 @@ class VNExpressItem(Item):
     tags = Field()
     catid = Field()
     postid = Field()
+    catidlist = Field()
+    catidbase = Field()

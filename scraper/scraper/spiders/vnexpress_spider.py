@@ -33,11 +33,7 @@ class VNExpressSpider(scrapy.Spider):
         urls = []
         for id in cat_ids:
             urls.append(
-                f"https://vnexpress.net/category/day?cateid={id}&fromdate={timestamp_history}&todate={timestamp_midnight}")
-            for i in range(1, 6):
-                urls.append(
-                    f"https://vnexpress.net/category/day?cateid={id}&fromdate={timestamp_history}&todate={timestamp_midnight}&allcate={id}&page={i}")
-
+                f"https://vnexpress.net/category/day?cateid={id}&fromdate={timestamp_history}&todate={timestamp_midnight}&allcate={id}")
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parse_category_page)
 
@@ -57,14 +53,14 @@ class VNExpressSpider(scrapy.Spider):
             logging.info(f"Link: {link}\nTitle: {link_text}")
             yield response.follow(url=link, callback=self.parse_article_page)
 
-        '''
+
         #Limiting the amount of articles scraped for now
         next_page = response.xpath(
             "//a[@class='btn-page next-page ']/@href").extract()
 
         if len(next_page) > 0:
             yield response.follow(url=next_page[0], callback=self.parse_category_page)
-        '''
+
 
     def parse_article_page(self, response):
 

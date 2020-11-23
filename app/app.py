@@ -14,15 +14,15 @@ app = Flask(__name__)
 # Fixing all seeds
 def random_seed(seed_value):
     np.random.seed(seed_value)  # cpu vars
-#    random.seed(seed_value)  # Python
+    random.seed(seed_value)  # Python
 
 
-random_seed(666)
+random_seed(500)
 
 
-model_nb = model(r'model', "nb_model.pkl")
-model_svm = model(r'model', "svm_model.pkl")
-model_linreg = model(r'model', "linreg_model.pkl")
+model_nb = model(r'ml_models', "nb_model.pkl")
+model_svm = model(r'ml_models', "svm_model.pkl")
+model_linreg = model(r'ml_models', "linreg_model.pkl")
 
 # Define API
 HOST = "0.0.0.0"
@@ -56,7 +56,7 @@ def predict():
             if len(text_in) == 0:
                 return render_template(
                     "index.html",
-                    prediction={"ERROR": "Please enter a headline or generate one"},
+                    prediction={"ERROR": "Không có nội dung"},
                 )
             else:
                 # Check if text_in is in inference data
@@ -64,7 +64,7 @@ def predict():
                 true_value = (
                     cat_dict[data["catidbase"][filter1].values[0]]
                     if filter1.any()
-                    else ": Does not exist in the inference dataset"
+                    else ": Không tồn tại trong bộ dữ liệu"
                 )
                 output = model_nb.get_top_k(text_in, 3)
                 return render_template(
@@ -74,12 +74,12 @@ def predict():
                     real=str(true_value),
                 )
 
-        elif request.form["submit_button"] == "Linear Support Vector Machine":
+        elif request.form["submit_button"] == "Support Vector Machine":
             text_in = request.form["text"]
             if len(text_in) == 0:
                 return render_template(
                     "index.html",
-                    prediction={"ERROR": "Please enter a headline or generate one"},
+                    prediction={"ERROR": "Không có nội dung"},
                 )
             else:
                 # Check if text_in is in inference data
@@ -87,7 +87,7 @@ def predict():
                 true_value = (
                     cat_dict[data["catidbase"][filter1].values[0]]
                     if filter1.any()
-                    else ": Does not exist in the inference dataset"
+                    else ": Không tồn tại trong bộ dữ liệu"
                 )
                 output = model_svm.get_top_k(text_in, 3)
                 return render_template(
@@ -102,14 +102,14 @@ def predict():
             if len(text_in) == 0:
                 return render_template(
                     "index.html",
-                    prediction={"ERROR": "Please enter a headline or generate one"},
+                    prediction={"ERROR": "Không có nội dung"},
                 )
             else:
                 filter1 = data["title"].isin([text_in])
                 true_value = (
                     cat_dict[data["catidbase"][filter1].values[0]]
                     if filter1.any()
-                    else ": Does not exist in the inference dataset"
+                    else ": Không tồn tại trong bộ dữ liệu"
                 )
                 output = model_linreg.get_top_k(text_in, 3)
                 return render_template(

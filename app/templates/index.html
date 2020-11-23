@@ -40,82 +40,66 @@
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="icon" type="image/png" href="static/images/favicon.png">
-
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 
 <body>
 
-
-  <!-- Primary Page Layout
-  –––––––––––––––––––––––––––––––––––––––––––––––––– 
-  <div class="container">
-    <nav class="navbar">
-      <div class="container">
-        <ul class="navbar-list">
-          <li class="navbar-item"><a class="navbar-link" href="#">Home</a></li>
-          <li class="navbar-item"><a class="navbar-link" href="https://imadelhanafi.com/posts/text_classification_ulmfit/" target="_blank">Blog post</a></li>
-          <li class="navbar-item"><a class="navbar-link" href="https://github.com/imadelh/NLP-news-classification" target="_blank">Github</a></li>
-          <li class="navbar-item"><a class="navbar-link" href="https://imadelhanafi.com" target="_blank">About</a></li>
-
-        </ul>
-      </div>
-    </nav>
--->
-
-
-  <!-- Primary Page Layout
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-
-  <!-- The above form looks like this -->
   <div class="docs-section" id="intro">
+
     <div class="container">
       <form action="{{ url_for('predict')}}" method="post">
         <div class="row">
-          <h6 class="docs-header">Article Classification - Serverless deployement</h6>
-          <p> Generate random news or type yours (up to 160 characters), then use the Logistic regression or ULMfit
-            model to find predicted classes of the news.</p>
+          <h6 class="docs-header">Article Classification</h6>
+          <p> Ấn Generate để chọn một tiêu đề bài báo ngẫu nhiên (hoặc tự nhập tiêu đề, max 160 từ), sau đó dùng các nút để chọn mô hình dự đoán thể loại tin tức.</p>
           <input type="submit" class="button-primary" name="submit_button" value="Generate">
         </div>
-        <textarea rows="6" class="u-full-width" name="text" maxlength="160" placeholder="Generate or write a headline"
+        <textarea rows="6" class="u-full-width" name="text" maxlength="160" placeholder="Nhập nội dung cần dự đoán"
           id="news">{{news}}</textarea>
+        <div class="row">
+          <div class="one-third column">
+            <div id="loading"></div>
+            <div id="content">
+              <input type="submit" name="submit_button" value="Multinomial Naive Bayes" onclick="loading();">
+            </div>
+          </div>
+          <div class="one-third column">
+            <div id="loading"></div>
+            <div id="content">
+              <input type="submit" name="submit_button" value="Support Vector Machine" onclick="loading();">
+            </div>
+          </div>
+          <div class="one-third column">
+            <div id="loading"></div>
+            <div id="content">
+              <input type="submit" name="submit_button" value="Linear Regression" onclick="loading();">
+            </div>
+          </div>
+        </div>
         <div class="row">
           <div class="two columns">
             <div id="loading"></div>
             <div id="content">
-              <input type="submit" name="submit_button" value="Multinomial Naive Bayes" onclick="loading();">
-              <input type="submit" name="submit_button" value="Linear Support Vector Machine" onclick="loading();">
-              <input type="submit" name="submit_button" value="Linear Regression" onclick="loading();">
               <input type="submit" name="submit_button" value="Clear">
             </div>
           </div>
         </div>
 
         <ul>
-          <li>Top 3 predictions and associated probabilities
+          <li>Top 3 dự đoán của mô hình:
             <ul>
               {% for key, value in prediction.items() %}
               <li>{{ key }} : {{ value }}</li>
               {% endfor %}
             </ul>
           </li>
-          <li>True class {{real}}</li>
+          <li>Chủ đề thực của bài báo: {{real}}</li>
         </ul>
       </form>
     </div>
-  </div>
-  <!-- 
-<div class="container">
-    <div class="docs-section examples" id="examples">
-      <p class="example-description">Made with ♡ by <a href="https://imadelhanafi.com" target="_blank">Imad</a></p>
-      <p class="example-description"> <font size="1">All news are generated randomly and this website is not responsible for the type or the content of these news.</font></p>
 
-    </div>
-    
-</div>
--->
-  <!-- End Document
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  </div>
+
 </body>
 
 </html>
